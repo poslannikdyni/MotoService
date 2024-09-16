@@ -2,6 +2,8 @@ package ru.clevertec.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -236,5 +238,15 @@ public class MotoServiceTest {
 
         verifyNoMoreInteractions(motoRepository);
         verifyNoMoreInteractions(motoMapper);
+    }
+
+    @ParameterizedTest
+    @MethodSource("ru.clevertec.util.TestData#valuesForGetNotFoundTest")
+    void shouldNotFoundException_whenGetWithNoValidId(UUID id) {
+        // when, then
+        assertThrows(
+                NotFoundException.class,
+                () -> motoService.get(id)
+        );
     }
 }
